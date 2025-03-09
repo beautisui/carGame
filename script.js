@@ -26,8 +26,16 @@ const checkCollision = (enemyCar, playerCar, moveInterval) => {
 };
 
 const updateScore = (scoreBoard) => {
-  const currentScore = parseInt(scoreBoard.textContent);
-  scoreBoard.textContent = currentScore + 1;
+  scoreBoard.textContent = parseInt(scoreBoard.textContent) + 1;
+};
+
+const updateHighestScore = (highestScore, currentScore) => {
+  const storedHighScore = parseInt(localStorage.getItem("highestScore")) || 0;
+
+  if (currentScore > storedHighScore) {
+    localStorage.setItem("highestScore", currentScore);
+    highestScore.textContent = currentScore;
+  }
 };
 
 const moveEnemyCar = (enemyCar, playerCar) => {
@@ -37,7 +45,12 @@ const moveEnemyCar = (enemyCar, playerCar) => {
     enemyCar.style.top = positionY + "px";
 
     if (positionY > 500) {
-      updateScore(document.querySelector("#current-score"));
+      const scoreBoard = document.querySelector("#current-score");
+      const highestScore = document.querySelector("#highest-score");
+
+      updateScore(scoreBoard);
+      updateHighestScore(highestScore, parseInt(scoreBoard.textContent));
+
       enemyCar.remove();
       clearInterval(moveInterval);
     }
@@ -79,7 +92,7 @@ const movePlayerCar = (event, playerCar) => {
 };
 
 const startEnemyCarGeneration = (road, playerCar) => {
-  setInterval(() => createEnemyCar(road, playerCar), 2000);
+  setInterval(() => createEnemyCar(road, playerCar), 1000);
 };
 
 const setupEventListeners = (playerCar, road) => {
@@ -94,6 +107,9 @@ const setupEventListeners = (playerCar, road) => {
 const startGame = () => {
   const road = document.querySelector(".road");
   const playerCar = document.querySelector(".player-car");
+  const highestScore = document.querySelector("#highest-score");
+
+  highestScore.textContent = localStorage.getItem("highestScore") || 0;
 
   setupEventListeners(playerCar, road);
   startEnemyCarGeneration(road, playerCar);
