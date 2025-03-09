@@ -25,6 +25,11 @@ const checkCollision = (enemyCar, playerCar, moveInterval) => {
   }
 };
 
+const updateScore = (scoreBoard) => {
+  const currentScore = parseInt(scoreBoard.textContent.match(/\d+/)[0]);
+  scoreBoard.textContent = `Score: ${currentScore + 1}`;
+};
+
 const moveEnemyCar = (enemyCar, playerCar) => {
   let positionY = -100;
   const moveInterval = setInterval(() => {
@@ -32,6 +37,7 @@ const moveEnemyCar = (enemyCar, playerCar) => {
     enemyCar.style.top = positionY + "px";
 
     if (positionY > 500) {
+      updateScore(document.querySelector(".score-board"));
       enemyCar.remove();
       clearInterval(moveInterval);
     }
