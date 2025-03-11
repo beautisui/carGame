@@ -82,23 +82,24 @@ const movePlayerCar = (event, playerCar) => {
 
   if (event.key === "ArrowLeft" && positionX > 10) {
     positionX -= 30;
-  } else if (
-    event.key === "ArrowRight" &&
-    positionX < roadWidth - carWidth - 10
-  ) {
+  }
+
+  if (event.key === "ArrowRight" && positionX < roadWidth - carWidth - 10) {
     positionX += 30;
   }
+
   playerCar.style.left = positionX + "px";
 };
 
 const startEnemyCarGeneration = (road, playerCar) => {
-  setInterval(() => createEnemyCar(road, playerCar), 1000);
+  setInterval(() => createEnemyCar(road, playerCar), 2000);
 };
 
 const setupEventListeners = (playerCar, road) => {
   document.addEventListener("keydown", (event) =>
     movePlayerCar(event, playerCar)
   );
+
   document.addEventListener("mousemove", (event) =>
     moveCarWithMouse(event, playerCar, road)
   );
