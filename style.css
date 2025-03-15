@@ -92,10 +92,9 @@ body {
 
 .enemy-car {
   position: absolute;
-  width: 50px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   top: -100px;
   font-size: 40px;
   text-align: center;
-  line-height: 60px;
 }
