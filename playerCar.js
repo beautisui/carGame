@@ -3,7 +3,11 @@ class PlayerCar {
     this.element = element;
     this.roadWidth = roadWidth;
     this.carWidth = 40;
+    this.carHeight = 40;
     this.positionX = 125;
+    this.positionY = 450;
+
+    this.updatePosition();
   }
 
   moveLeft() {
@@ -21,7 +25,7 @@ class PlayerCar {
   }
 
   moveWithMouse(mouseX, roadRect) {
-    let newPosition = mouseX - roadRect.left - this.carWidth / 2;
+    const newPosition = mouseX - roadRect.left - this.carWidth / 2;
     if (newPosition >= 0 && newPosition <= this.roadWidth - this.carWidth) {
       this.positionX = newPosition;
       this.updatePosition();
@@ -30,6 +34,7 @@ class PlayerCar {
 
   updatePosition() {
     this.element.style.left = this.positionX + "px";
+    this.element.style.top = this.positionY + "px";
   }
 }
 
