@@ -26,7 +26,6 @@ class Game {
     setInterval(() => {
       const enemyCar = new EnemyCar(this.road, this.roadWidth);
       this.enemyCars.push(enemyCar);
-      console.log("enemycar", enemyCar);
 
       const moveInterval = setInterval(() => {
         enemyCar.positionY += 5;
@@ -59,9 +58,10 @@ class Game {
 
   start() {
     document.addEventListener("keydown", (event) => this.handleKeyPress(event));
-    document.addEventListener("mousemove", (event) =>
-      this.handleMouseMove(event)
-    );
+    document.addEventListener("mousemove", (event) => {
+      this.handleMouseMove(event);
+    });
+
     this.startEnemyCarGeneration();
   }
 }
