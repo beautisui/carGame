@@ -98,3 +98,37 @@ body {
   font-size: 40px;
   text-align: center;
 }
+
+#game-over-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#game-over-message {
+  display: none;
+}
+
+#game-over-message.hidden {
+  display: none;
+}
+
+#restart-btn {
+  background-color: rgb(194, 9, 9);
+  border-radius: 10px;
+
+  &:hover {
+    background-color: greenyellow;
+    cursor: pointer;
+  }
+}

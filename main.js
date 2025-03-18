@@ -1,3 +1,7 @@
-import Game from "./game.js";
+import GameController from "./game.js";
 
-globalThis.onload = () => new Game();
+globalThis.onload = () => {
+  const gameElements = GameController.setupGameElements();
+  const gameController = new GameController(gameElements);
+  gameController.start();
+};
