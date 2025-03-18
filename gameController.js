@@ -4,15 +4,16 @@ import Scoreboard from "./scoreboard.js";
 import * as screen from "./screen.js";
 
 class GameController {
-  constructor(gameElemet, screen) {
+  constructor(element, screen) {
     this.screen = screen;
-    this.road = gameElemet.road;
-    this.playerCarElement = gameElemet.playerCarElement;
-    this.scoreElement = gameElemet.scoreElement;
-    this.highScoreElement = gameElemet.highScoreElement;
-    this.roadWidth = gameElemet.roadWidth;
-    this.playerCar = new PlayerCar(this.playerCarElement, this.roadWidth);
-    this.scoreboard = new Scoreboard(this.scoreElement, this.highScoreElement);
+    this.road = element.road;
+    this.playerCarElement = element.playerCarElement;
+    this.scoreElement = element.scoreElement;
+    this.highScoreElement = element.highScoreElement;
+    this.roadWidth = element.roadWidth;
+    this.playerCar = element.playerCar;
+    this.scoreboard = element.scoreboard;
+
     this.enemyCars = [];
     this.gameOver = false;
   }
@@ -21,22 +22,32 @@ class GameController {
     return document.querySelector(selector);
   }
 
-  static setupGameElements() {
-    return {
-      road: this.getDomElement(".road"),
-      playerCarElement: this.getDomElement(".player-car"),
-      scoreElement: this.getDomElement("#current-score"),
-      highScoreElement: this.getDomElement("#highest-score"),
-      roadWidth: 300,
+  static create() {
+    const road = this.getDomElement(".road");
+    const playerCarElement = this.getDomElement(".player-car");
+    const scoreElement = this.getDomElement("#current-score");
+    const highScoreElement = this.getDomElement("#highest-score");
+    const roadWidth = 300;
+    const playerCar = new PlayerCar(playerCarElement, roadWidth);
+    const scoreboard = new Scoreboard(scoreElement, highScoreElement);
+    const elements = {
+      road,
+      playerCarElement,
+      scoreElement,
+      highScoreElement,
+      roadWidth,
+      playerCar,
+      scoreboard,
     };
+    return new GameController(elements, screen);
   }
 
   handleGameOver() {
     this.gameOver = true;
-    screen.displayOverMsg();
-    screen.removeLane();
-    screen.removeListeners();
-    screen.restartGame();
+    this.screen.displayOverMsg();
+    this.screen.removeLane();
+    this.screen.removeListeners();
+    this.screen.restartGame();
   }
 
   updatePosition(enemyCar) {
@@ -88,13 +99,13 @@ class GameController {
   }
 
   start() {
-    screen.hideGameOverMessage();
-    screen.handleKeydown(
+    this.screen.hideGameOverMessage();
+    this.screen.handleKeydown(
       () => this.playerCar.moveLeft(),
       () => this.playerCar.moveRight()
     );
 
-    screen.handleMouseMove((event) => this.handleMouseMove(event));
+    this.screen.handleMouseMove((event) => this.handleMouseMove(event));
     this.createEnemyCar();
   }
 }

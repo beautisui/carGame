@@ -1,13 +1,3 @@
-class DushmanGaadi {
-  #id;
-  #dimensions;
-  #position;
-  constructor(id, dimensions, position) {
-    this.#id = id;
-    this.#dimensions = dimensions;
-  }
-}
-
 class EnemyCar {
   constructor(road, roadWidth) {
     this.element = document.createElement("div");

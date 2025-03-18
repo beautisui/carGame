@@ -1,7 +1,13 @@
-import GameController from "./game.js";
+import GameController from "./gameController.js";
 
 globalThis.onload = () => {
-  const gameElements = GameController.setupGameElements();
-  const gameController = new GameController(gameElements);
+  const gameController = GameController.create();
   gameController.start();
 };
+
+// globalThis.onload = () => {
+//   const ui = new UI();
+//   const car = new car();
+//   const gameController = new GameController();
+//   gameController.start();
+// };
