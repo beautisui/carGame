@@ -16,6 +16,13 @@ class GameController {
 
     this.enemyCars = [];
     this.gameOver = false;
+    // Difficulty tuning
+    this.spawnBaseInterval = 1000; // ms between spawns at score 0
+    this.spawnMinInterval = 300; // minimum ms between spawns
+    this.spawnAcceleration = 20; // ms reduction per score point
+
+    this.baseEnemySpeed = 5; // pixels per tick base
+    this.enemySpeedFactor = 0.15; // added speed per score point
   }
 
   static getDomElement(selector) {
@@ -51,7 +58,7 @@ class GameController {
   }
 
   updatePosition(enemyCar) {
-    enemyCar.positionY += 5;
+    // positionY should be updated by the mover; this just applies it to DOM
     enemyCar.element.style.top = enemyCar.positionY + "px";
   }
 
@@ -75,6 +82,13 @@ class GameController {
         return;
       }
 
+      // move by per-enemy speed when available, otherwise fallback
+      if (typeof enemyCar.speed === "number") {
+        enemyCar.positionY += enemyCar.speed;
+      } else {
+        enemyCar.positionY += this.baseEnemySpeed;
+      }
+
       this.updatePosition(enemyCar);
       this.checkCollisions(enemyCar, moveInterval);
 
@@ -85,11 +99,29 @@ class GameController {
   }
 
   createEnemyCar() {
-    setInterval(() => {
+    // dynamic spawner using setTimeout so delay can change with score
+    const spawn = () => {
+      if (this.gameOver) return;
+
       const enemyCar = new EnemyCar(this.road, this.roadWidth);
+      // compute speed using current score
+      const score = this.scoreboard?.score || 0;
+      const speed = this.baseEnemySpeed + score * this.enemySpeedFactor;
+      
+      enemyCar.speed = speed + (Math.random() * 0.6 - 0.3); // small variance
+
       this.enemyCars.push(enemyCar);
       this.moveEnemyCar(enemyCar);
-    }, 1000);
+
+      const nextDelay = Math.max(
+        this.spawnMinInterval,
+        this.spawnBaseInterval - score * this.spawnAcceleration
+      );
+
+      setTimeout(spawn, nextDelay);
+    };
+
+    spawn();
   }
 
   handleMouseMove(event) {
